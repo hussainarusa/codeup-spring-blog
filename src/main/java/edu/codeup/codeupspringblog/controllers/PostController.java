@@ -1,30 +1,59 @@
 package edu.codeup.codeupspringblog.controllers;
 
+import edu.codeup.codeupspringblog.model.Post;
+import edu.codeup.codeupspringblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
+
 @Controller
-@RequestMapping("/posts")
 public class PostController {
-    @GetMapping("")
-    @ResponseBody
-    public String indexPage(){
-        return "post index page";
-    };
 
-    @GetMapping("/posts/{id}")
-    @ResponseBody
-    public String individualPost(@PathVariable String id){
-        return "view an individual post";
+    private PostRepository postDao;
+    public PostController(PostRepository postDao){
+        this.postDao = postDao;
     }
 
-    @GetMapping("/posts/create")
-    @ResponseBody
-    public String createPost(){
-        return "view the form for creating a post";
+
+//    @GetMapping("/{id}")
+//    public String viewIndividualPost(@PathVariable long id, Model vModel){
+//      if(postDao.existsById(id)){
+//          BlogPost post = postDao.findById(id).get();
+//           vModel.addAttribute("post");
+//      }
+//
+//    }
+
+//
+//    @GetMapping("/post")
+//    @ResponseBody
+
+
+    @GetMapping("/create")
+    public String showCreatePostView(){
+        return "/posts/create";
     }
 
+    @GetMapping("/create")
+    public String createPost(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content
+
+    ) {
+        Post newPost = new Post ( title,content);
+        postDao.save(newPost);
+        return "create new post";
+    }
+//    public List<Post> returnPosts() {
+//
+//       return postDao.findAll();
+//    }
 }
+
+
