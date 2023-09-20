@@ -1,7 +1,9 @@
 package edu.codeup.codeupspringblog.controllers;
 
 import edu.codeup.codeupspringblog.model.Post;
+import edu.codeup.codeupspringblog.model.User;
 import edu.codeup.codeupspringblog.repositories.PostRepository;
+import edu.codeup.codeupspringblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import java.util.List;
 public class PostController {
 
     private PostRepository postDao;
+    private UserRepository userDao;
+
     public PostController(PostRepository postDao){
         this.postDao = postDao;
     }
@@ -37,7 +41,7 @@ public class PostController {
 
     @GetMapping("/create")
     public String showCreatePostView(){
-        return "/posts/create";
+        return "posts/create";
     }
 
     @GetMapping("/create")
@@ -46,9 +50,12 @@ public class PostController {
             @RequestParam("content") String content
 
     ) {
-        Post newPost = new Post ( title,content);
+        //Hard Coded User
+        User hardCodedUser = userDao.findById(2L).get();
+        Post newPost = new Post ( title,content, hardCodedUser);
+
         postDao.save(newPost);
-        return "create new post";
+        return "redirect:/posts";
     }
 //    public List<Post> returnPosts() {
 //

@@ -16,7 +16,7 @@ public class Post {
     private String content;
     // getters and setters
 
-    @ManyToOne(mappedBy = "post", cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
 
 
@@ -30,6 +30,10 @@ public Post(){
     }
 
     public Post(String title, String content) {
+    }
+
+    public Post(String title, String content, User hardCodedUser) {
+
     }
 
     public Long getId() {
